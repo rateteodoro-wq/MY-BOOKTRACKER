@@ -1,0 +1,9 @@
+    update: protectedProcedure
+      .input(z.object({ title: z.string().optional(), description: z.string().optional(), targetChapters: z.number().optional() }))
+      .mutation(async ({ ctx, input }) => {
+        const book = await db.getUserBook(ctx.user.id);
+        if (!book) throw new Error("Book not found");
+        
+        const result = await db.updateBook(book.id, input);
+        return result;
+      }),
